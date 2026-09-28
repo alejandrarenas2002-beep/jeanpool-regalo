@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEANPOOL.EXE 💙</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% 20%, #142b52 0%, #07101f 40%, #02050a 100%);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 30px 30px;
+    pointer-events: none;
+}
+
+.screen {
+    min-height: 100vh;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    position: relative;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.card {
+    width: min(430px, 100%);
+    background: rgba(5, 12, 25, .88);
+    border: 1px solid rgba(77, 166, 255, .35);
+    border-radius: 25px;
+    padding: 30px 22px;
+    text-align: center;
+    box-shadow:
+        0 0 35px rgba(0, 110, 255, .15),
+        inset 0 0 30px rgba(0, 100, 255, .04);
+    backdrop-filter: blur(12px);
+}
+
+.system {
+    font-family: 'Orbitron', sans-serif;
+    color: #65b9ff;
+    letter-spacing: 2px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(27px, 8vw, 43px);
+    margin-bottom: 15px;
+}
+
+h2 {
+    margin-bottom: 12px;
+}
+
+p {
+    line-height: 1.7;
+    color: #d8e6f5;
+}
+
+button {
+    border: none;
+    margin-top: 25px;
+    padding: 14px 25px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, #238cff, #6dc7ff);
+    color: #03101e;
+    box-shadow: 0 0 25px rgba(52, 159, 255, .35);
+    transition: .25s;
+}
+
+button:hover {
+    transform: scale(1.04);
+}
+
+button:active {
+    transform: scale(.96);
+}
+
+.small {
+    font-size: 12px;
+    opacity: .6;
+    margin-top: 15px;
+}
+
+.warning {
+    color: #77c5ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.loader {
+    width: 100%;
+    height: 12px;
+    background: #101d2d;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 25px 0 10px;
+}
+
+.loader-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #238cff, #9edaff);
+    border-radius: 20px;
+    transition: width .12s;
+}
+
+.percent {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    color: #82caff;
+}
+
+.objects {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.object {
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
+    padding: 20px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.object:hover {
+    transform: translateY(-3px);
+    border-color: rgba(82,173,255,.5);
+}
+
+.object-icon {
+    font-size: 55px;
+    margin-bottom: 8px;
+}
+
+.object h3 {
+    font-size: 16px;
+}
+
+.object p {
+    font-size: 12px;
+    opacity: .7;
+}
+
+.car {
+    font-size: 90px;
+    margin: 15px 0;
+    animation: drive 2.5s ease-in-out infinite;
+}
+
+@keyframes drive {
+    0%,100% {
+        transform: translateX(-5px) rotate(-2deg);
+    }
+    50% {
+        transform: translateX(5px) rotate(2deg);
+    }
+}
+
+.car.fast {
+    animation: speed 1s ease-in-out infinite;
+}
+
+@keyframes speed {
+    0% { transform: translateX(-12px) rotate(-4deg); }
+    50% { transform: translateX(12px) rotate(4deg); }
+    100% { transform: translateX(-12px) rotate(-4deg); }
+}
+
+.tag {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: rgba(67,157,255,.12);
+    border: 1px solid rgba(67,157,255,.25);
+    color: #85caff;
+    font-size: 11px;
+    margin: 5px 3px;
+}
+
+.message {
+    background: rgba(255,255,255,.04);
+    padding: 20px;
+    border-radius: 18px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.message strong {
+    color: #7dc8ff;
+}
+
+.photo-box {
+    width: 100%;
+    height: 260px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 20px;
+    border: 1px solid rgba(100,190,255,.3);
+    background: #091321;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-placeholder {
+    padding: 25px;
+    color: #7890a8;
+    font-size: 13px;
+}
+
+.heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 20px;
+    animation: floatUp 2.5s linear forwards;
+    z-index: 999;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0) scale(.7);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100vh) scale(1.4);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -15px;
+    z-index: 999;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.final {
+    font-size: 26px;
+    margin: 15px 0;
+}
+
+.signature {
+    margin-top: 20px;
+    color: #72c3ff;
+    font-weight: 700;
+}
+
+.hidden {
+    display: none !important;
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO
+     Pon tu archivo de música en la misma carpeta y llámalo:
+     pa-ti.mp3
+-->
+<audio id="music" loop>
+    <source src="pa-ti.mp3" type="audio/mpeg">
+</audio>
+
+
+<!-- PANTALLA 1 -->
+<section class="screen active" id="screen1">
+    <div class="card">
+
+        <div class="system">JEANPOOL.EXE v1.0</div>
+
+        <div style="font-size:60px; margin-bottom:10px;">🚗</div>
+
+        <h1>Hola, amor.</h1>
+
+        <p>
+            Se ha detectado un paquete sospechoso
+            destinado exclusivamente para ti.
+        </p>
+
+        <div class="warning">
+            ⚠ ADVERTENCIA: contiene carritos.
+        </div>
+
+        <button onclick="startExperience()">
+            ABRIR REGALO 😏
+        </button>
+
+        <div class="small">
+            No se aceptan devoluciones. 😂
+        </div>
+
+    </div>
+</section>
+
+
+<!-- PANTALLA 2 -->
+<section class="screen" id="screen2">
+    <div class="card">
+
+        <div class="system">ANALIZANDO...</div>
+
+        <h2>Buscando contenido</h2>
+
+        <p id="loadingText">
+            Iniciando escaneo...
+        </p>
+
+        <div class="loader">
+            <div class="loader-bar" id="loaderBar"></div>
+        </div>
+
+        <div class="percent" id="percent">
+            0%
+        </div>
+
+    </div>
+</section>
+
+
+<!-- PANTALLA 3 -->
+<section class="screen" id="screen3">
+    <div class="card">
+
+        <div class="system">ESCANEO COMPLETADO</div>
+
+        <h2>Se encontraron 2 objetos.</h2>
+
+        <p>
+            Y sí... los dos son para ti. 😌
+        </p>
+
+        <div class="objects">
+
+            <div class="object" onclick="showCar(1)">
+                <div class="object-icon">🏎️</div>
+                <h3>OBJETO #01</h3>
+                <p>Nissan Skyline 2000GT-R LBWK</p>
+            </div>
+
+            <div class="object" onclick="showCar(2)">
+                <div class="object-icon">🚗</div>
+                <h3>OBJETO #02</h3>
+                <p>The Simpsons Family Car</p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- PANTALLA 4: SKYLINE -->
+<section class="screen" id="screen4">
+    <div class="card">
+
+        <div class="system">OBJETO #01</div>
+
+        <div class="car fast">🏎️</div>
+
+        <span class="tag">HW J-IMPORTS</span>
+
+        <h2>Nissan Skyline 2000GT-R LBWK</h2>
+
+        <div class="message">
+            Bueno... este lo vi y pensé:
+
+            <br><br>
+
+            <strong>
+            "Sí. Este es demasiado Jeanpool."
+            </strong>
+
+            <br><br>
+
+            Así que técnicamente no tuve opción. 😂
+        </div>
+
+        <button onclick="showScreen('screen3')">
+            ← VOLVER A LOS REGALOS
+        </button>
+
+    </div>
+</section>
+
+
+<!-- PANTALLA 5: SIMPSONS -->
+<section class="screen" id="screen5">
+    <div class="card">
+
+        <div class="system">OBJETO #02</div>
+
+        <div class="car">🚗</div>
+
+        <span class="tag">SCREEN TIME</span>
+
+        <h2>The Simpsons Family Car</h2>
+
+        <div class="message">
+            Y este...
+
+            <br><br>
+
+            JAJAJAJA no sé, simplemente tenía que estar.
+
+            <br><br>
+
+            Porque regalarte <strong>UN</strong> carrito
+            era muy fácil.
+
+            <br><br>
+
+            Yo quería hacerme la difícil. 😌
+        </div>
+
+        <button onclick="showFinal()">
+            CONTINUAR 💙
+        </button>
+
+    </div>
+</section>
+
+
+<!-- PANTALLA FINAL -->
+<section class="screen" id="screen6">
+    <div class="card">
+
+        <div class="system">REGALO DESBLOQUEADO 💙</div>
+
+        <div class="final">🚗🏎️💙</div>
+
+        <h2>Bueno, amor...</h2>
+
+        <div class="message">
+
+            Y bueno... esos son tus regalitos. 😂
+
+            <br><br>
+
+            Aunque siendo sincera, creo que me divertí
+            más preparando esto que tú recibiéndolos.
+
+            <br><br>
+
+            Pero quería hacerte algo diferente,
+            porque me gusta tener detalles contigo.
+
+            <br><br>
+
+            Y porque sí, eres mi persona favorita
+            para malgastar plata en carritos. 😌
+
+            <br><br>
+
+            <strong>
+            Te quiero muchísimo, amor. 💙
+            </strong>
+
+        </div>
+
+        <!-- FOTO -->
+        <div class="photo-box">
+
+            <!--
+            AQUÍ VA TU FOTO.
+
+            Si tu foto se llama "nosotros.jpg",
+            cambia "foto.jpg" por "nosotros.jpg".
+            -->
+
+            <img src="foto.jpg"
+                 alt="Nosotros"
+                 onerror="this.style.display='none'; document.getElementById('photoText').style.display='block';">
+
+            <div class="photo-placeholder hidden" id="photoText">
+                📸 Aquí aparecerá nuestra foto.
+            </div>
+
+        </div>
+
+        <button onclick="showSecret()">
+            🤫 UN ÚLTIMO MENSAJE
+        </button>
+
+    </div>
+</section>
+
+
+<!-- MENSAJE SECRETO -->
+<section class="screen" id="screen7">
+    <div class="card">
+
+        <div class="system">MENSAJE CONFIDENCIAL</div>
+
+        <div style="font-size:65px;">😏</div>
+
+        <h2>Tengo una confesión...</h2>
+
+        <div class="message">
+
+            He estado pensando seriamente en
+            cómo hacer para gustarte todavía más.
+
+            <br><br>
+
+            Y después de una exhaustiva investigación
+            científica llegué a una conclusión:
+
+            <br><br>
+
+            <strong>
+            Me voy a poner perfume de Smirnoff Spicy
+            para gustarte más. 😂
+            </strong>
+
+            <br><br>
+
+            Porque si te gusta tanto el de tamarindo,
+            capaz funciona.
+
+            <br><br>
+
+            Si no funciona...
+
+            <br>
+
+            <strong>
+            por lo menos voy a oler a trago. JAJAJAJA.
+            </strong>
+
+        </div>
+
+        <div class="signature">
+            Con amor,<br>
+            tu problemática favorita. 💙
+        </div>
+
+        <button onclick="restart()">
+            🔄 VOLVER A EMPEZAR
+        </button>
+
+    </div>
+</section>
+
+
+<script>
+
+function showScreen(id) {
+
+    document.querySelectorAll('.screen')
+        .forEach(screen => screen.classList.remove('active'));
+
+    document.getElementById(id)
+        .classList.add('active');
+
+    window.scrollTo(0,0);
+}
+
+
+function startExperience() {
+
+    const music = document.getElementById('music');
+
+    /*
+    El navegador permite intentar reproducir
+    música después de una interacción del usuario.
+    */
+
+    music.play().catch(() => {});
+
+    showScreen('screen2');
+
+    let progress = 0;
+
+    const bar = document.getElementById('loaderBar');
+    const percent = document.getElementById('percent');
+    const text = document.getElementById('loadingText');
+
+    const messages = [
+        "Buscando carritos...",
+        "Analizando gustos de Jeanpool...",
+        "Comprobando nivel de obsesión por Hot Wheels...",
+        "Detectando regalos...",
+        "Confirmando que Ale efectivamente gastó plata...",
+        "Casi listo..."
+    ];
+
+    const interval = setInterval(() => {
+
+        progress += Math.floor(Math.random() * 8) + 4;
+
+        if(progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+
+            setTimeout(() => {
+                showScreen('screen3');
+            }, 700);
+        }
+
+        bar.style.width = progress + "%";
+        percent.textContent = progress + "%";
+
+        const index = Math.min(
+            Math.floor(progress / 18),
+            messages.length - 1
+        );
+
+        text.textContent = messages[index];
+
+    }, 180);
+}
+
+
+function showCar(number) {
+
+    if(number === 1) {
+        showScreen('screen4');
+    }
+
+    if(number === 2) {
+        showScreen('screen5');
+    }
+}
+
+
+function showFinal() {
+
+    showScreen('screen6');
+
+    createConfetti();
+    createHearts();
+}
+
+
+function showSecret() {
+
+    showScreen('screen7');
+
+    createHearts();
+}
+
+
+function createHearts() {
+
+    for(let i = 0; i < 18; i++) {
+
+        setTimeout(() => {
+
+            const heart = document.createElement('div');
+
+            heart.className = 'heart';
+
+            heart.textContent =
+                ['💙','💙','🩵','❤️','🚗'][Math.floor(Math.random()*5)];
+
+            heart.style.left =
+                Math.random() * 100 + 'vw';
+
+            heart.style.bottom = '-30px';
+
+            heart.style.animationDuration =
+                (2 + Math.random() * 2) + 's';
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 4000);
+
+        }, i * 100);
+    }
+}
+
+
+function createConfetti() {
+
+    for(let i = 0; i < 60; i++) {
+
+        setTimeout(() => {
+
+            const piece = document.createElement('div');
+
+            piece.className = 'confetti';
+
+            piece.style.left =
+                Math.random() * 100 + 'vw';
+
+            piece.style.animationDuration =
+                (2 + Math.random() * 2) + 's';
+
+            piece.style.transform =
+                `rotate(${Math.random()*360}deg)`;
+
+            document.body.appendChild(piece);
+
+            setTimeout(() => piece.remove(), 4000);
+
+        }, i * 20);
+    }
+}
+
+
+function restart() {
+
+    const music = document.getElementById('music');
+
+    music.currentTime = 0;
+
+    showScreen('screen1');
+}
+
+</script>
+
+</body>
+</html>
